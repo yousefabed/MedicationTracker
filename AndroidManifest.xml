@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.medicationtrackertest"
+    package="edu.cgu.ist380.medicationtracker"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -14,7 +14,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.example.medicationtrackertest.MainActivity"
+            android:name="edu.cgu.ist380.medicationtracker.MainActivity"
             android:uiOptions="splitActionBarWhenNarrow"
             android:label="@string/title_activity_main" >
             <intent-filter>

@@ -1,10 +1,16 @@
-package com.example.medicationtrackertest;
+package edu.cgu.ist380.medicationtracker;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
+
+import edu.cgu.ist380.medicationtracker.db.Meds;
+import edu.cgu.ist380.medicationtracker.db.MedsDataSource;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -12,13 +18,16 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.CalendarView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 public class MainActivity extends FragmentActivity implements
@@ -38,12 +47,15 @@ public class MainActivity extends FragmentActivity implements
 	 * The {@link ViewPager} that will host the section contents.
 	 */
 	ViewPager mViewPager;
-
+ 
+	 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
+		
+		
+		 
 		// Set up the action bar.
 		final ActionBar actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
@@ -120,14 +132,14 @@ public class MainActivity extends FragmentActivity implements
 			// getItem is called to instantiate the fragment for the given page.
 			// Return a DummySectionFragment (defined as a static inner class
 			// below) with the page number as its lone argument.
-			Fragment fragment = new DummySectionFragment();
-			if(position ==0)
-				  fragment = new HomeFragment();
-			else if (position ==2)
+			Fragment fragment = new MyMedsTab();
+			if (position == 0)
+				fragment = new HomeFragment();
+			else if (position == 2)
 				fragment = new CalendarFragment();
 
 			Bundle args = new Bundle();
-			args.putInt(DummySectionFragment.ARG_SECTION_NUMBER, position + 1);
+			args.putInt(MyMedsTab.ARG_SECTION_NUMBER, position + 1);
 			fragment.setArguments(args);
 			return fragment;
 		}
@@ -157,28 +169,50 @@ public class MainActivity extends FragmentActivity implements
 	 * A dummy fragment representing a section of the app, but that simply
 	 * displays dummy text.
 	 */
-	public static class DummySectionFragment extends Fragment {
+	public static class MyMedsTab extends Fragment {
 		/**
 		 * The fragment argument representing the section number for this
 		 * fragment.
 		 */
+		 
 		public static final String ARG_SECTION_NUMBER = "section_number";
-
-		public DummySectionFragment() {
-		}
+		public MyMedsTab(){};
+		
+	 
 
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.fragment_main_dummy,
+			View rootView = inflater.inflate(R.layout.mymeds_tab,
 					container, false);
-			TextView dummyTextView = (TextView) rootView
-					.findViewById(R.id.section_label);
-			dummyTextView.setText(Integer.toString(getArguments().getInt(
-					ARG_SECTION_NUMBER)));
+			// Get database conection 
+			MedsDataSource datasource = new MedsDataSource(this.getActivity());
+			 Log.e(MainActivity.class.getName(), "db is  "+ datasource);
+			 datasource.open();
+			 Meds med = new Meds();
+			 med.setName("Test");
+			 med.setPeriod("3");
+			 med.setPeriodType("days");
+			 med.setQty("2");
+			 med.setQtyType("tablets");
+			 med.setDailyOccurrence("twice");
+			 med.setEnabled(true);
+			 
+			 datasource.createMed( med);
+			 
+		   ListView listview = (ListView) rootView.findViewById(R.id.listView1);
+			List<Meds> medsList = datasource.getAllMeds();
+			datasource.close();
+			
+			ArrayAdapter<Meds> adapter = new ArrayAdapter<Meds>(this.getActivity(),
+			            android.R.layout.simple_list_item_1, medsList);
+		listview.setAdapter(adapter);
+			    
+		 
 			return rootView;
 		}
 	}
+
 	public static class HomeFragment extends Fragment {
 		/**
 		 * The fragment argument representing the section number for this
@@ -192,16 +226,16 @@ public class MainActivity extends FragmentActivity implements
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.home_tab,
-					container, false);
-//			TextView dummyTextView = (TextView) rootView
-//					.findViewById(R.id.section_label);
-//			dummyTextView.setText(Integer.toString(getArguments().getInt(
-//					ARG_SECTION_NUMBER)));
+			View rootView = inflater.inflate(R.layout.home_tab, container,
+					false);
+			// TextView dummyTextView = (TextView) rootView
+			// .findViewById(R.id.section_label);
+			// dummyTextView.setText(Integer.toString(getArguments().getInt(
+			// ARG_SECTION_NUMBER)));
 			return rootView;
 		}
 	}
-	
+
 	public static class CalendarFragment extends Fragment {
 		/**
 		 * The fragment argument representing the section number for this
@@ -215,10 +249,11 @@ public class MainActivity extends FragmentActivity implements
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.calendar_tab,
-					container, false);
-		//	 final CalendarView calView = (CalendarView) rootView.findViewById(R.id.calView);
-		//	 calView.setDate(new Date().getTime());
+			View rootView = inflater.inflate(R.layout.calendar_tab, container,
+					false);
+			// final CalendarView calView = (CalendarView)
+			// rootView.findViewById(R.id.calView);
+			// calView.setDate(new Date().getTime());
 			return rootView;
 		}
 	}
