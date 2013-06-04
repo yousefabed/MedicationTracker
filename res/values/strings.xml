@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">MedicationTrackerTest</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="welcome">Welcome, </string>
+    <string name="todays">Today Schedule</string>
+    <string name="date">Monday, 5/29/2013</string>
+    <string name="title_section1">Home</string>
+    <string name="title_section2">My Meds</string>
+    <string name="title_section3">My Calendar</string>
+    <string name="textAM">- 8:00pm: 1 tablet of vitamin.</string>
+    <string name="textPM">- 3:00pm: 2 tablets of Tylenol\n
+- 8:00pm: 5 mL of NYQUIL.</string>
+    <string name="add">Medication name</string>
+</resources>
