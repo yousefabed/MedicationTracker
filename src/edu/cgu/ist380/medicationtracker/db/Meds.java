@@ -8,6 +8,7 @@ public class Meds {
 	private String qty;
 	private String qtyType;
 	private String dailyOccurrence;
+	
 	private String period;
 	private String periodType;
 	private boolean isEnabled;
@@ -66,5 +67,8 @@ public class Meds {
 		this.isEnabled = isEnabled;
 	}
 	
-	
+	public String toString()
+	{
+		return 	name +"- " +qty +" " +qtyType +" " + this.dailyOccurrence +" a day for "+this.period +" " +this.periodType;
+	}
 }

@@ -190,12 +190,12 @@ public class MainActivity extends FragmentActivity implements
 			 Log.e(MainActivity.class.getName(), "db is  "+ datasource);
 			 datasource.open();
 			 Meds med = new Meds();
-			 med.setName("Test");
-			 med.setPeriod("3");
+			 med.setName("Tylanol");
+			 med.setPeriod("5");
 			 med.setPeriodType("days");
-			 med.setQty("2");
+			 med.setQty("1");
 			 med.setQtyType("tablets");
-			 med.setDailyOccurrence("twice");
+			 med.setDailyOccurrence("once");
 			 med.setEnabled(true);
 			 
 			 datasource.createMed( med);
